@@ -1,57 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchImage, removeImage } from '../redux/actions/imagesAction';
+
 //new: 58214ab914962a3b825b63a2306b696dca9f8a58bfa5bf6a0e8affc4213ed62c
 //old: de31bf154ddcc3ff4c380dcf5c21808a3899b02a88fbf7cfbb11dbb1d02d35e1
 
-const PhotoGrid = () => {  
+const PhotoGrid = (props) => { 
+    console.log(props)
+    const { imgArr, isLoaded } = props; 
     
-    const [images, setImages] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    useEffect(()=>{
+        console.log("remove image");
+        removeImage();
+    },[])
     
-    const fetchImages = (count = 30) => {
-        axios.get(`https://api.unsplash.com/photos/random?client_id=58214ab914962a3b825b63a2306b696dca9f8a58bfa5bf6a0e8affc4213ed62c&count=${count}`)
-            .then(res => { 
-                setImages([...images, ...res.data]);           
-                setIsLoaded(true);  
-                console.log(res.data)
-            }).catch(err => {
-                console.log(err)
-            })
-    }    
+    const handleClick = (e) => {
+        const imgId = e.target.id;        
+        props.fetchImage(imgId);
+        props.history.push('/image/'+imgId)
+    }
     
-    const UnsplashImage = () => {
-        const col1 = images.filter((image,index) => index <= 10).map((image, index) => {return(<img src={image.urls.regular} className="image" key={index} /> )});
-        const col2 = images.filter((image,index) => index > 10 && index <= 20).map((image, index) =>{return(<img src={image.urls.regular} className="image" key={index} />)});
-        const col3 = images.filter((image,index) => index > 20 && index <= 30).map((image, index) =>{return(<img src={image.urls.regular} className="image" key={index} />)});
-        const col4 = images.filter((image,index) => index > 30 && index <= 40).map((image, index) =>{return(<img src={image.urls.regular} className="image" key={index} />)});
+     const UnsplashImage = () => {
+        const imgArr1  = [] 
+        const imgArr2  = [] 
+        const imgArr3  = [] 
+        
+        for ( let i = 0; i < imgArr.length; i++) {
+            if ((i + 1) % 3 == 0) {
+                imgArr3.push(imgArr[i]);
+            } else if ((i + 1) % 2 == 0) {
+                imgArr2.push(imgArr[i]);
+            } else {
+                imgArr1.push(imgArr[i]);
+            }
+        }
+         
+        const col1 = imgArr1.map((image, index) =>{return(<img src={image.urls.regular} id={image.id} className="image" key={index} onClick={handleClick}/>)});
+        const col2 = imgArr2.map((image, index) =>{return(<img src={image.urls.regular} id={image.id} className="image" key={index} onClick={handleClick}/>)});
+        const col3 = imgArr3.map((image, index) =>{return(<img src={image.urls.regular} id={image.id} className="image" key={index} onClick={handleClick}/>)});
+         
         return(
             <div className="flex p-2 bd-highlight">
-                <div className="flex-item" id="col1">{col1}</div>
-                <div className="flex-item" id="col1">{col2}</div>
-                <div className="flex-item" id="col1">{col3}</div>
-                <div className="flex-item" id="col1">{col4}</div>
+                <div className="flex-item" id="col1">
+                    <div>{col1}</div>
+                </div>    
+                <div className="flex-item" id="col2">
+                    <div>{col2}</div>
+                </div>
+                <div className="flex-item" id="col3">
+                     <div>{col3}</div>
+                </div>
             </div>
         )
     }    
   
-    const handleScroll = (e) =>{
-        e.stopPropagation();
-        const windowScrolled = window.scrollY;
-        const photoGridHeight = document.getElementById('photoGrid').offsetHeight ;
-        if( (photoGridHeight -  windowScrolled) < 1000 ){
-            fetchImages();
-        }      
-    }
-
-    useEffect(()=>{
-        fetchImages();  
-        
-        window.addEventListener('scroll', handleScroll);
-        
-        return () =>{window.removeEventListener('scroll', handleScroll);}
-        
-    },[isLoaded]);
-    
     return(
       <div className="photo-grid" id="photoGrid">
             {
@@ -64,5 +68,20 @@ const PhotoGrid = () => {
     )  
 }
 
-export default PhotoGrid;
+const mapStateToProps = (state) =>{
+    console.log(state)
+    return {
+        imgArr : state.imgArr,
+        isLoaded: state.isLoaded
+    }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        fetchImage : (imgId) => {dispatch(fetchImage(imgId))},
+        removeImage : () => {dispatch(removeImage())},
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoGrid);
 
