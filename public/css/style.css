@@ -5,7 +5,7 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #282c34;
+
     color: white;
 }
 
@@ -14,10 +14,10 @@ code {
         monospace;
 }
 
-
-.parallax-header {
+/*******Header********/
+.parallax-container {
     min-height: 500px;
-    background-image: url("");
+    background-image: url("../images/background.jpg");
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
     background-position: center;
@@ -25,6 +25,64 @@ code {
     background-size: cover;
 }
 
+
+.parallax-container .header-content {
+    padding-top: 10%;
+}
+
+.parallax-container .title,
+.parallax-container .sub-title {
+    color: #ffffff;
+}
+
+.parallax-container #searchForm {
+    width: 35%;
+    margin: 20px auto;
+}
+
+.parallax-container #searchForm .form-group {
+    position: relative;
+    width: 100%;
+}
+
+.parallax-container #searchForm .form-control {
+    width: 100%;
+}
+
+.parallax-container #searchForm #searchBtn {
+    position: absolute;
+    right: 0px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+@media screen and (max-width: 600px) {
+    .parallax-container {
+        min-height: 550px;
+    }
+
+    .header-content {
+        padding: 0 15px;
+    }
+
+    .parallax-container .title {
+        margin-top: 50px;
+    }
+
+    .parallax-container #searchForm {
+        width: 100%;
+    }
+
+    .parallax-container #searchForm #searchBtn {
+        right: 15px;
+        top: 12px;
+        cursor: pointer;
+    }
+}
+
+
+/******* photo-grid ********/
 .photo-grid {
     width: 90%;
     margin: 0 auto;
@@ -65,6 +123,10 @@ code {
     margin-top: 8px;
     vertical-align: middle;
     width: 100%;
+}
+
+.image-column .image {
+    cursor: zoom-in;
 }
 
 .image-container {

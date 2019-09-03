@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import './index.css';
+
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
