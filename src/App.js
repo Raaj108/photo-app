@@ -1,31 +1,25 @@
-import React, { Component } from 'react';
-import axios from 'axios'
+import React, { useEffect } from 'react';
 import PhotoGrid from './components/PhotoGrid';
+import SearchImages from './components/SearchImages';
+import Image from './components/Image';
+import ParallaxHeader from './components/ParallaxHeader';
+import { connect } from 'react-redux';
+import { fetchImages } from './redux/actions/imagesAction';
+import { BrowserRouter, Route } from  'react-router-dom';
 
-class App extends Component {
-  
-  state = {
-    imgs : []
-  }
-  
-  componentDidMount() {
-   axios.get('https://api.unsplash.com/photos/?client_id=de31bf154ddcc3ff4c380dcf5c21808a3899b02a88fbf7cfbb11dbb1d02d35e1').then(data => {
-     this.setState({
-       imgs: data.data
-     })    
-   }).catch(err => {
-     console.log(err)
-   })
- }
-  
-  render(){ 
+
+const App = () => { 
     return (
-      <div className="App">
-        <h1>Test</h1>
-        <PhotoGrid imgList= {this.state.imgs}></PhotoGrid>
-      </div>
-    );
-  } 
+        <BrowserRouter>
+          <div className="App">       
+              <ParallaxHeader></ParallaxHeader>
+              <Route exact path="/" component={PhotoGrid}></Route>      
+              <Route path="/image/:id" component={Image}></Route>             
+              <Route exact path="/search/photos" component={SearchImages}></Route>             
+          </div>
+        </BrowserRouter>
+    ); 
 }
+
 
 export default App;
