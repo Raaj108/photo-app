@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { searchImages } from '../redux/actions/imagesAction';
+import { searchImages } from '../../redux/actions/imagesAction';
 import { createBrowserHistory } from 'history';
 
 const SearchForm = (props) => {

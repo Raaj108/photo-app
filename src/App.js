@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import PhotoGrid from './components/PhotoGrid';
-import SearchImages from './components/SearchImages';
-import Image from './components/Image';
-import ParallaxHeader from './components/ParallaxHeader';
+import ParallaxHeader from './components/layouts/ParallaxHeader';
+import SearchImages from './components/search/SearchImages';
+import PhotoGrid from './components/photos/PhotoGrid';
+import Image from './components/photos/Image';
 import { connect } from 'react-redux';
 import { fetchImages } from './redux/actions/imagesAction';
 import { BrowserRouter, Route } from  'react-router-dom';
